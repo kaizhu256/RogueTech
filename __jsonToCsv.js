@@ -61,11 +61,13 @@ Definition of the CSV Format
         // convert list-of-dict to list-of-list
         if (!Array.isArray(csvRowList[0])) {
             header = header || Object.keys(csvRowList);
-            csvRowList = csvRowList.map(function (row) {
+            csvRowList = [
+                header
+            ].concat(csvRowList.map(function (row) {
                 return header.map(function (key) {
                     return row[key];
                 });
-            });
+            }));
         }
         return csvRowList.map(function (row) {
             return row.map(function (val) {
