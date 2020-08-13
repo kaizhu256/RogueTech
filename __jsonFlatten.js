@@ -46,7 +46,7 @@
                 console.error(errCaught);
                 process.exit();
             }
-            fs.writeFile(".tmp/" + file.slice(2).replace((
+            fs.writeFile(".json/" + file.slice(2).replace((
                 /\//g
             ), ".").replace((
                 /[^0-9A-Za-z\-._]/g
@@ -54,7 +54,7 @@
                 objectDeepCopyWithKeysSorted(data),
                 undefined,
                 4
-            ), function (err) {
+            ) + "\n", function (err) {
                 if (err) {
                     throw err;
                 }
@@ -64,7 +64,7 @@
     }
     cnt = 0;
     list = require("child_process").spawnSync((
-        "find | grep -v \"^...tmp\" | grep -i \"\\.json$\""
+        "find | grep -v \"^...json\" | grep -i \"\\.json$\""
     ), {
         encoding: "utf8",
         shell: true,
