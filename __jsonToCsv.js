@@ -125,6 +125,47 @@ Definition of the CSV Format
     rowList = JSON.parse(require("fs").readFileSync(process.argv[2], "utf8"));
     colDict = {};
     rowList.forEach(function (row) {
+        let hardpoints;
+        // init hardpoints
+        Array.from(row.Locations || []).forEach(function (elem) {
+            Array.from(elem.Hardpoints || []).forEach(function (elem) {
+                hardpoints = hardpoints || {
+                    all: 0,
+                    ballistic: 0,
+                    energy: 0,
+                    missile: 0,
+                    antipersonnel: 0
+                };
+                switch (elem.Omni || elem.WeaponMount) {
+                case "AntiPersonnel":
+                    hardpoints.all += 1;
+                    hardpoints.antipersonnel += 1;
+                    break;
+                case "Ballistic":
+                    hardpoints.all += 1;
+                    hardpoints.ballistic += 1;
+                    break;
+                case "Energy":
+                    hardpoints.all += 1;
+                    hardpoints.energy += 1;
+                    break;
+                case "Missile":
+                    hardpoints.all += 1;
+                    hardpoints.missile += 1;
+                    break;
+                case true:
+                    hardpoints.all += 1;
+                    hardpoints.ballistic += 1;
+                    hardpoints.energy += 1;
+                    hardpoints.missile += 1;
+                    hardpoints.antipersonnel += 1;
+                    break;
+                }
+            });
+        });
+        if (hardpoints) {
+            row.hardpoints = hardpoints;
+        }
         Object.entries(row).forEach(function ([
             key, val
         ]) {
