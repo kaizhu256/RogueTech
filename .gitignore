@@ -13,3 +13,5 @@ temp*
 tmp
 utility2
 !.gitignore
+
+!__*
